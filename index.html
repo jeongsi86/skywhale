@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026년 어린이평화합창단 하늘고래 평화통일기행 · 참가자용 여정 가이드</title>
+<meta name="description" content="2026.07.26–29, 어린이평화합창단 하늘고래 조중 접경지역 평화통일기행 참가자용 여정 안내 · 지도 · 좌석 · 준비물 가이드">
+<meta property="og:type" content="website">
+<meta property="og:title" content="2026년 어린이평화합창단 하늘고래 평화통일기행">
+<meta property="og:description" content="2026.07.26–29 · 3박 4일 · (사)평화통일교육문화센터 · 참가자용 여정 가이드">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026년 어린이평화합창단 하늘고래 평화통일기행">
+<meta name="twitter:description" content="2026.07.26–29 · 3박 4일 · (사)평화통일교육문화센터 · 참가자용 여정 가이드">
+<meta name="twitter:image" content="og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{
+    --paper:#F1ECE0; --paper-dim:#E8E1D0; --ink:#243349; --ink-soft:#4C5A70;
+    --seal:#A93B2C; --seal-dim:#C97365; --moss:#5C6B4A; --gold:#AE8438;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Noto Sans KR',sans-serif;line-height:1.65;}
+  h1,h2,h3,.serif{font-family:'Noto Serif KR',serif;}
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px 60px;}
+
+  .topbar{background:var(--ink);color:var(--paper);padding:18px 16px 14px;text-align:center;}
+  .topbar h1{font-size:19px;margin:0 0 3px;font-weight:700;}
+  .topbar .sub{font-size:12px;color:#C9CFDA;}
+
+  .tabs{position:sticky;top:0;z-index:50;display:flex;background:var(--ink);border-top:1px solid rgba(255,255,255,0.12);}
+  .tab{flex:1;text-align:center;padding:11px 4px;font-size:13px;color:#B9C1CF;cursor:pointer;border-bottom:3px solid transparent;user-select:none;}
+  .tab .d{font-size:10px;display:block;opacity:0.75;}
+  .tab.active{color:#fff;border-bottom-color:var(--seal-dim);background:rgba(255,255,255,0.06);}
+
+  #map{width:100%;height:320px;}
+  .leaflet-popup-content{font-family:'Noto Sans KR',sans-serif;font-size:13px;}
+
+  .day-panel{display:none;padding-top:16px;}
+  .day-panel.active{display:block;}
+
+  .route-title{font-size:16px;font-weight:700;margin:0 0 2px;}
+  .route-sub{font-size:12.5px;color:var(--ink-soft);margin:0 0 14px;}
+
+  .timeline{list-style:none;margin:0 0 18px;padding:0;border-left:2px solid rgba(36,51,73,0.18);margin-left:8px;}
+  .timeline li{position:relative;padding:0 0 13px 18px;font-size:13.5px;}
+  .timeline li::before{content:'';position:absolute;left:-5px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--paper);border:2px solid var(--seal);}
+  .timeline .time{display:block;font-size:11.5px;color:var(--seal);font-weight:500;font-variant-numeric:tabular-nums;}
+  .timeline .meal{display:inline-block;margin-top:3px;font-size:11px;color:var(--gold);border:1px solid rgba(174,132,56,0.4);border-radius:999px;padding:1px 9px;}
+
+  .section-h{font-size:13px;font-weight:700;color:var(--seal);text-transform:uppercase;letter-spacing:0.04em;margin:18px 0 8px;}
+
+  .place-card{background:#fff;border:1px solid rgba(36,51,73,0.15);border-radius:10px;padding:13px 15px;margin-bottom:10px;}
+  .place-card h4{margin:0 0 3px;font-size:14.5px;}
+  .place-card .coord{font-size:10.5px;color:var(--gold);font-variant-numeric:tabular-nums;margin-bottom:6px;}
+  .place-card p{margin:0;font-size:13px;color:var(--ink-soft);white-space:pre-line;max-height:6.6em;overflow:hidden;}
+  .place-card[data-expanded="1"] p{max-height:none;}
+  .place-card .more{font-size:11.5px;color:var(--seal);cursor:pointer;display:inline-block;margin-top:5px;}
+  .place-card .locate{display:none;}
+  .card-actions{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;}
+  .card-actions .locate-btn{font-size:11px;color:var(--ink-soft);cursor:pointer;border:1px solid var(--ink-soft);border-radius:999px;padding:2px 9px;background:none;}
+  .card-actions a{font-size:11px;color:var(--seal);text-decoration:none;border:1px solid var(--seal-dim);border-radius:999px;padding:2px 9px;}
+
+  #ddaybar{background:var(--seal);color:#fff;text-align:center;padding:7px 12px;font-size:12.5px;font-weight:500;}
+  #ddaybar .num{font-size:14px;font-weight:700;}
+
+  .weather-box{display:flex;align-items:center;gap:10px;background:var(--paper-dim);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;}
+  .weather-box .temp{font-size:20px;font-weight:700;}
+  .weather-box .wcity{font-size:11.5px;color:var(--ink-soft);}
+  .weather-box.loading{color:var(--ink-soft);}
+
+  .verify-btn{font-size:10.5px;color:var(--seal);background:none;border:1px solid var(--seal);border-radius:999px;padding:1px 8px;cursor:pointer;margin-left:4px;}
+  .verify-btn:disabled{opacity:0.4;cursor:default;}
+
+  .checkin-box{background:var(--paper-dim);border-radius:10px;padding:13px 15px;margin-bottom:16px;}
+  .checkin-box h5{margin:0 0 8px;font-size:13px;color:var(--seal);}
+  .checkin-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(36,51,73,0.1);font-size:12.5px;}
+  .checkin-row:last-child{border-bottom:none;}
+  .checkin-btn{background:var(--ink);color:#fff;font-size:11.5px;padding:5px 12px;border-radius:999px;text-decoration:none;white-space:nowrap;}
+
+  .pack-item{display:flex;align-items:center;gap:9px;padding:9px 4px;border-bottom:1px solid rgba(36,51,73,0.1);font-size:14px;}
+  .pack-item input{width:18px;height:18px;flex-shrink:0;}
+  .pack-item.checked span{color:var(--ink-soft);text-decoration:line-through;}
+  .pack-group{font-size:12px;color:var(--seal);font-weight:700;margin:16px 0 4px;text-transform:uppercase;}
+
+  .group-header{font-size:13px;font-weight:700;color:var(--ink);background:var(--paper-dim);padding:6px 10px;border-radius:6px 6px 0 0;margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .group-header:first-of-type{margin-top:0;}
+  .confirm-btn{font-size:11px;font-weight:500;border-radius:999px;padding:3px 10px;border:1px solid var(--ink-soft);background:#fff;color:var(--ink-soft);white-space:nowrap;}
+  .confirm-btn.done{border-color:var(--moss);background:var(--moss);color:#fff;}
+
+  .seat-table-wrap{overflow-x:auto;margin-bottom:20px;}
+  .seat-table{width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap;}
+  .seat-table th{text-align:left;font-size:11px;color:var(--ink-soft);font-weight:500;padding:6px 8px;border-bottom:1px solid rgba(36,51,73,0.2);}
+  .seat-table td{padding:8px;border-bottom:1px solid rgba(36,51,73,0.08);}
+  .seat-table td.seat{font-variant-numeric:tabular-nums;color:var(--seal);font-weight:500;}
+  .seat-table td.mono{font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-soft);}
+  .seat-table tr.hide{display:none;}
+
+  .seat-search{width:100%;padding:9px 12px;border:1px solid rgba(36,51,73,0.25);border-radius:8px;font-size:14px;margin-bottom:12px;font-family:'Noto Sans KR',sans-serif;background:#fff;color:var(--ink);}
+
+  .seatwrap{display:flex;flex-direction:column;gap:6px;margin-bottom:6px}
+  .srow{display:flex;align-items:center;gap:5px}
+  .rownum{width:22px;font-size:11px;color:var(--ink-soft);text-align:right;flex-shrink:0}
+  .sgrp{display:flex;gap:3px}
+  .saisle{width:12px;flex-shrink:0}
+  .sseat{width:64px;height:34px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;border:0.5px solid rgba(36,51,73,0.15)}
+  .sempty{background:var(--paper-dim);color:var(--ink-soft);opacity:0.5}
+  .sfilled{background:#E1F5EE;color:#04342C;border-color:#5DCAA5;font-weight:500}
+  .scolhead{display:flex;gap:5px;margin-left:27px}
+  .scolhead .sseat{height:auto;border:none;background:none;font-size:10px;color:var(--ink-soft)}
+  .seat-map-title{font-size:13.5px;font-weight:700;margin:16px 0 8px;}
+
+  .hotel-card{background:var(--paper-dim);border-radius:10px;padding:12px 15px;margin-top:14px;font-size:12.5px;}
+  .hotel-card b{display:block;font-size:13.5px;margin-bottom:3px;}
+
+  .place-link{color:var(--seal);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:500;}
+  .place-card{transition:background-color 0.4s, box-shadow 0.4s;}
+  .place-card.flash-highlight{background-color:#FBEFE2;box-shadow:0 0 0 3px var(--seal-dim);}
+
+  .app-card{background:#fff;border:1px solid rgba(36,51,73,0.15);border-radius:10px;padding:12px 15px;margin-bottom:10px;}
+  .app-card h5{margin:0 0 4px;font-size:13.5px;font-family:'Noto Serif KR',serif;}
+  .app-card p{margin:0 0 8px;font-size:12.5px;color:var(--ink-soft);}
+  .app-links a{font-size:11px;color:var(--seal);text-decoration:none;border:1px solid var(--seal-dim);border-radius:999px;padding:2px 12px;margin-right:6px;}
+
+  .footer{margin-top:26px;border-top:1px solid rgba(36,51,73,0.15);padding-top:16px;}
+  .logi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;}
+  .logi-card{background:var(--paper-dim);border-radius:8px;padding:11px 13px;}
+  .logi-card h5{margin:0 0 4px;font-size:12px;color:var(--seal);}
+  .logi-card p{margin:0;font-size:12.5px;}
+  .foot-note{margin-top:16px;font-size:11px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>어린이평화합창단 하늘고래 평화통일기행</h1>
+  <div class="sub">2026.07.26–29 · 3박 4일 · (사)평화통일교육문화센터</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-day="1" onclick="selectDay(1)">1일차<span class="d">7/26 일</span></div>
+  <div class="tab" data-day="2" onclick="selectDay(2)">2일차<span class="d">7/27 월</span></div>
+  <div class="tab" data-day="3" onclick="selectDay(3)">3일차<span class="d">7/28 화</span></div>
+  <div class="tab" data-day="4" onclick="selectDay(4)">4일차<span class="d">7/29 수</span></div>
+  <div class="tab" data-day="5" onclick="selectDay(5)">참가자<span class="d">정보</span></div>
+  <div class="tab" data-day="6" onclick="selectDay(6)">준비물<span class="d">체크</span></div>
+</div>
+
+<div id="ddaybar"></div>
+
+<div id="map"></div>
+
+<div class="wrap">
+
+  <div class="day-panel active" id="panel-1">
+    <p class="route-title">인천 → 연길 → 용정 → 이도백하 → 장백현</p>
+    <p class="route-sub">항공기 + 전용차량 · 중식 콩국수/연변요리 · 석식 샤브샤브</p>
+    <div class="weather-box loading" id="weather-1" data-lat="42.89" data-lon="129.51" data-city="연길">날씨 불러오는 중…</div>
+    <ul class="timeline">
+      <li><span class="time">03:30</span>북대전IC 집결 (주차 가능, 리무진 버스 이동)</li>
+      <li><span class="time">06:30</span>인천공항 도착, 출국수속 및 미팅</li>
+      <li><span class="time">09:25–10:50</span>인천 → 연길 (KE117)</li>
+      <li><span class="time">10:50–11:50</span>입국수속 후 가이드와 만나기</li>
+      <li><span class="time">11:50–12:20</span>연길 → 용정 이동</li>
+      <li><span class="time">12:20–13:00</span>중식 <span class="meal">콩국수·연변요리</span></li>
+      <li><span class="time">13:00–14:00</span>용정 · <span class="place-link" onclick="scrollToPlace('place_313')">3.13열사릉</span> 참배, <span class="place-link" onclick="scrollToPlace('place_15manwon')">15만원탈취비</span> 탐방, <span class="place-link" onclick="scrollToPlace('place_myeongdong')">명동촌</span></li>
+      <li><span class="time">14:00–15:00</span>윤동주·송몽규 생가, 명동학교 참관</li>
+      <li><span class="time">15:00–17:00</span><span class="place-link" onclick="scrollToPlace('place_myeongdong')">명동촌</span> → <span class="place-link" onclick="scrollToPlace('place_idobaekha')">이도백하</span> 이동</li>
+      <li><span class="time">17:00–18:00</span>석식 <span class="meal">샤브샤브</span></li>
+      <li><span class="time">18:00–21:00</span><span class="place-link" onclick="scrollToPlace('place_idobaekha')">이도백하</span> → <span class="place-link" onclick="scrollToPlace('place_janbaek')">장백현</span> 이동</li>
+      <li><span class="time">21:00–22:00</span>호텔 체크인 후 휴식</li>
+    </ul>
+
+    <div class="section-h">기행지 정보</div>
+    <div class="place-card" id="place_313" data-expanded="0">
+      <h4>3.13열사릉</h4>
+      <p>중국 지린성 연변조선족자치주 용정시 지신진 합성리에 위치. 1919년 3월 1일 서울의 3.1운동 소식이 전해지자, 용정에 거주하던 조선인 3만여 명이 독립 만세운동을 일으켰다. 시위대가 일제 영사관으로 행진하던 중 일본 군경이 발포하여 14명이 현장에서 숨지거나 병원에서 사망했다.
+
+14명의 독립운동가 중 13명의 유해가 안장된 묘역으로, 오랫동안 방치되었다가 1989년 현지 사학자들에 의해 묘역이 발견되었으며, 현재는 용정시 중점문화재로 보호받고 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_15manwon" data-expanded="0">
+      <span class="locate" onclick="focusPlace(42.707331,129.4738233)">지도에서 보기</span>
+      <h4>15만원 탈취비</h4>
+      <div class="coord">42.7073, 129.4738</div>
+      <p>영화 《좋은 놈, 나쁜 놈, 이상한 놈》의 실제 모티브가 된 이 사건은 1920년 1월 4일, 만주 북간도 지역에서 활동하던 무장독립운동 단체 철혈광복단 단원들이 일제의 자금을 탈취하여 군자금을 확보하려 했던 의거다.
+
+3·1 운동 이후 무장투쟁의 필요성을 절감한 윤준희, 임국정, 한상호, 최봉설 등 6명의 청년은 독립군을 무장시킬 자금을 마련하기 위해 '은행 털이'를 계획했다. 이들은 조선은행 회령지점 직원이었던 전홍섭으로부터 일제가 길회선 철도 부설 자금 15만원을 용정으로 운송한다는 핵심 정보를 입수했다. 거사 당일, 단원들은 용정 인근의 동량어구 길목에 매복해 있다가 현금을 실은 마차와 무장 호송대를 습격하여 일본 순사를 사살하고 현금 15만원을 탈취하는 데 성공했다. 당시 15만원은 현재 가치로 수백억 원에 달하는 거액이며, 소총 5,000정과 탄환 50만 발을 구매해 독립군 수천 명을 무장시킬 수 있는 규모였다.
+
+탈취한 돈으로 무기를 사기 위해 러시아 블라디보스토크로 이동했으나, 독립운동가로 위장해 있던 밀정 엄인섭의 배신으로 일제에 체포되었다. 윤준희, 임국정, 한상호 지사는 사형 선고를 받고 서대문형무소에서 순국하였으며, 최봉설 지사만이 탈출에 성공했다. 탈취비는 용정시에서 명동촌으로 가는 길목인 동량어구 산비탈에 자리하고 있으며, 연변 지역 항일 투쟁의 중요한 상징으로 여겨진다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_myeongdong" data-expanded="0">
+      <span class="locate" onclick="focusPlace(42.672723,129.5383601)">지도에서 보기</span>
+      <h4>명동촌 (윤동주 생가 · 명동교회 · 명동학교)</h4>
+      <div class="coord">42.6727, 129.5384</div>
+      <p>중국 길림성 용정시에 위치한 명동촌(明東村)은 1899~1905년 사이 김약연, 문치정 등 네 가문이 이주해 개척한 북간도 최초의 한인 집단 마을이다. '동방(조선)을 밝힌다'는 뜻을 지닌 이곳은 1910~1920년대 항일 민족 교육과 독립운동의 중심지였다.
+
+마을에는 민족 시인 윤동주와 송몽규의 생가와 북간도 최초의 근대식 학교인 명동학교, 그리고 명동교회가 복원되어 있다. 일제의 탄압 속에서도 수많은 독립운동가와 문학가를 배출한 한민족 항일 운동의 역사적인 성지다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_idobaekha" data-expanded="0">
+      <span class="locate" onclick="focusPlace(42.4375081,128.1110536)">지도에서 보기</span>
+      <h4>이도백하</h4>
+      <div class="coord">42.4375, 128.1111</div>
+      <p>연변 조선족 자치주 안도현 산하의 진(鎭)이다. 백두산을 방문하기 전 최종적으로 거치게 되는 시가지로, 외국인 관광객이 거치는 도시인 만큼 타 진에 비해 개발이 잘 되어 있는 편이다. 면적은 609.46 km²이며 인구는 48,806명이다. 산하에는 8개의 촌이 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_janbaek" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.4184567,128.2049058)">지도에서 보기</span>
+      <h4>장백현</h4>
+      <div class="coord">41.4185, 128.2049</div>
+      <p>중국 지린성 바이산시에 위치한 자치현으로, 중국에서 유일한 조선족 자치현이다. 백두산의 일부를 점유하고 있다. 압록강을 사이로 북한의 량강도와 마주하고 있으며, 그중에서도 시가지는 혜산시와 국경을 맞대고 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+
+    <div class="hotel-card">
+      <b>숙소 · 长白志诚园酒店 (★★★★)</b>
+      长白县白山大街2号 · 0439-8229999
+    </div>
+  </div>
+
+  <div class="day-panel" id="panel-2">
+    <p class="route-title">장백현 → 백두산(남파) → 집안</p>
+    <p class="route-sub">전용차량 · 조식 호텔식 · 중식 현지식 · 석식 불고기</p>
+    <div class="weather-box loading" id="weather-2" data-lat="41.13" data-lon="126.19" data-city="집안">날씨 불러오는 중…</div>
+    <ul class="timeline">
+      <li><span class="time">05:30–06:30</span>장백현 탑산공원 · 영광탑 참관, 전망대에서 혜산시 조망</li>
+      <li><span class="time">06:30–07:00</span>조식 <span class="meal">호텔식</span></li>
+      <li><span class="time">07:00–08:00</span>장백 → 전망대 → <span class="place-link" onclick="scrollToPlace('place_baekdusan')">백두산 남파</span> 이동</li>
+      <li><span class="time">08:00–11:30</span><span class="place-link" onclick="scrollToPlace('place_baekdusan')">백두산 남파</span> 천지 및 <span class="place-link" onclick="scrollToPlace('place_hyeopgok')">압록강대협곡</span> 관람</li>
+      <li><span class="time">11:30–12:30</span>중식 <span class="meal">현지식</span></li>
+      <li><span class="time">12:30–17:30</span>백두산남파 → 송강하 → 통화 → 집안 이동</li>
+      <li><span class="time">17:30–19:00</span>고구려 유적지 탐방 · <span class="place-link" onclick="scrollToPlace('place_gwanggaeto')">광개토대왕비</span>, <span class="place-link" onclick="scrollToPlace('place_taewangneung')">태왕릉</span>, <span class="place-link" onclick="scrollToPlace('place_janggun')">장수왕릉</span></li>
+      <li><span class="time">19:00–20:00</span>석식 <span class="meal">불고기</span></li>
+      <li><span class="time">20:00–21:00</span>호텔체크인, 자유시간</li>
+    </ul>
+
+    <div class="section-h">기행지 정보</div>
+    <div class="place-card" id="place_baekdusan" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.9769915,128.0579167)">지도에서 보기</span>
+      <h4>백두산 남파</h4>
+      <div class="coord">41.9770, 128.0579</div>
+      <p>백두산(白頭山)은 북한 량강도 삼지연시와 중국 지린성 연변 조선족 자치주 사이 국경에 있는 화산이다. 중국에서는 창바이샨·장백산(长白山)이라고 부른다. 봉우리는 총 16개이고 최고봉은 해발 2,750m인 장군봉으로 조선에 속하며, 각 봉우리 정상 사이에는 칼데라 호수인 천지를 품었다. 천지와 주변 수계는 압록강, 두만강, 송화강의 발원지다.
+
+한반도와 만주를 통틀어 가장 높은 산으로, 한국의 전통 풍수지리에서는 한반도의 '조종산(祖宗山)'으로 여겨지며 근대 이후에는 민족의 영산(靈山)으로 자리매김하였다. 천지는 해발 2,267m에 위치하고, 평균 깊이 213.43m, 최대 수심 384m로 서해·남해보다도 깊다.
+
+백두산은 중국 지역에서 서파·북파·남파 세 코스로 입산 가능하다. 남파는 가장 희소성 있는 코스로, 북파(하루 2만명 이상)·서파(1만명 이상)에 비해 하루 1,500명 이하로만 입장 가능하며 6~10월 중순, 약 100일만 입산이 허가된다. 압록강 발원지를 따라 조선-중국 국경을 타고 올라가며, 남파 전망대와 주차장 일부는 실제 조선 땅을 중국이 임대해 이용하고 있어, 사실상 대한민국 사람이 유일하게 방문 가능한 조선 땅인 셈이다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_hyeopgok" data-expanded="0">
+      <h4>압록강 대협곡</h4>
+      <p>백두산 남파 입구에 위치한, 거대한 용암이 굳어 만들어진 절벽이다. 웅장한 절경을 자랑하며, 조선에서는 '천군바위'라고 부른다.</p>
+      <p style="margin-top:6px;font-size:11.5px"><a href="https://dprk360.com/inside-north-korea/chongun-rock/345/" target="_blank" rel="noopener" style="color:var(--seal)">참고 링크 ↗ (dprk360.com)</a></p>
+    </div>
+    <div class="place-card" id="place_gwanggaeto" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.14508,126.214245)">지도에서 보기</span>
+      <h4>광개토대왕비 (호태왕비)</h4>
+      <div class="coord">41.1451, 126.2142</div>
+      <p>광개토대왕비는 아들 장수왕이 왕 2년(414년)에 광개토대왕의 업적을 기념하기 위하여 세운 것으로 추정된다. 각력응회암으로 만들어진 비는 높이 6.39m, 무게 37톤으로 한국 최대 크기이며, 비 사면에는 1,775자가 새겨져 있다.
+
+비문은 세 부분으로 구성된다. 첫째는 고구려 건국신화와 추모왕(동명왕)·유류왕(유리왕)·대주류왕(대무신왕)의 세계(世系) 및 광개토왕의 행장, 둘째는 광개토왕의 정복활동과 영토관리(만주 정복, 백제 정벌, 신라 구원, 동부여·숙신 정벌)를 연대순으로 기록한 부분으로 64개 성과 1,400개 촌을 공파했다는 내용이 있다. 셋째는 능을 관리하는 수묘인(守墓人)의 숫자와 차출방식, 매매금지 규정으로, 고구려 수묘제 연구의 중요한 자료다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_taewangneung" data-expanded="0">
+      <h4>광개토대왕릉 (태왕릉)</h4>
+      <p>광개토대왕비가 서있는 곳으로부터 서남쪽 약 300미터 지점에 있으며, 변의 길이 66미터, 높이 14.8미터에 이르는 거대한 규모다. 명문 벽돌이 출토되어 일찍부터 고구려 왕릉으로 추정되었고, 무덤의 주인공으로는 광개토왕·장수왕·고국천왕 등이 비정돼 왔다. 출토 유물과 무덤 구조로 미루어 건립 연대는 4세기 말~5세기 초가 우세하여, 많은 이들이 광개토왕의 무덤으로 본다. 고구려 최전성기의 대형 돌무지무덤으로서 국내성 시기 왕권의 크기와 지배력을 짐작케 하는 중요한 유적이다.</p>
+    </div>
+    <div class="place-card" id="place_janggun" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.1576604,126.2262664)">지도에서 보기</span>
+      <h4>장수왕릉 (장군총)</h4>
+      <div class="coord">41.1577, 126.2263</div>
+      <p>3세기 초부터 427년까지 고구려가 도읍한 집안현 퉁구평야에는 광개토왕릉비와 태왕릉·사신총 등 석릉·토분 1만여 기가 있으나, 외형이 거의 완존한 석릉은 장군총뿐이다. 화강암을 정성들여 가공한 절석을 7단의 스텝 피라미드형으로 쌓았으며, 기단 한 변 길이 33m, 높이 약 13m다. 널방은 천장석이 있는 굴식이며 2개의 널받침이 있다. 1905년 일본인 학자 도리이가 처음 현지조사했다.
+
+무덤의 주인공에 대해서는 광개토대왕이라는 설과 그 아들 장수왕이라는 설이 있는데, 중국 측은 태왕릉을 광개토대왕릉으로, 장군총을 장수왕릉으로 보고 있으나 유물이 모두 도굴당해 추측에 의존하고 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+
+    <div class="hotel-card">
+      <b>숙소 · 集安香洲花园酒店 (★★★★)</b>
+      集安市沿江路121号 · 0435-5076666
+    </div>
+  </div>
+
+  <div class="day-panel" id="panel-3">
+    <p class="route-title">집안 → 관전 → 단동</p>
+    <p class="route-sub">전용차량 · 조식 호텔식 · 중식 현지식 · 석식 호텔 고급요리</p>
+    <div class="weather-box loading" id="weather-3" data-lat="40.13" data-lon="124.39" data-city="단둥">날씨 불러오는 중…</div>
+    <ul class="timeline">
+      <li><span class="time">05:30–06:40</span>국내성 새벽장 체험 또는 압록강변 산책 (자유선택)</li>
+      <li><span class="time">06:40–07:40</span>조식 후 체크아웃 <span class="meal">호텔식</span></li>
+      <li><span class="time">08:00–11:30</span>집안 → <span class="place-link" onclick="scrollToPlace('place_guknae')">국내성 터</span> → <span class="place-link" onclick="scrollToPlace('place_hwando')">환도산성</span>(참관) → 관전 이동</li>
+      <li><span class="time">11:30–12:30</span>중식 <span class="meal">현지식</span></li>
+      <li><span class="time">12:30–13:30</span>관전 → <span class="place-link" onclick="scrollToPlace('place_sufoong')">수풍댐</span> 이동</li>
+      <li><span class="time">13:30–15:00</span><span class="place-link" onclick="scrollToPlace('place_sufoong')">수풍댐</span> → <span class="place-link" onclick="scrollToPlace('place_hagudo')">하구도</span>, 유람선 타고 북녘땅 바라보기</li>
+      <li><span class="time">15:00–15:50</span>하구도 → <span class="place-link" onclick="scrollToPlace('place_hosan')">호산장성</span> · 박작성 이동</li>
+      <li><span class="time">15:50–17:00</span>호산장성·박작성 등반 — 북녘 방산마을, 통군정, 의주 조망</li>
+      <li><span class="time">17:00–18:00</span>호산장성·박작성 → 부교(<span class="place-link" onclick="scrollToPlace('place_dohajang')">중공군 도하장소</span>) → 압록강변(위화도 야경) → 호텔</li>
+      <li><span class="time">18:00–19:00</span>호텔 체크인</li>
+      <li><span class="time">19:00–20:30</span>석식 <span class="meal">호텔 고급요리</span></li>
+    </ul>
+
+    <div class="section-h">기행지 정보</div>
+    <div class="place-card" id="place_guknae" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.1206205,126.1836853)">지도에서 보기</span>
+      <h4>국내성터</h4>
+      <div class="coord">41.1206, 126.1837</div>
+      <p>국내성은 서기 3년부터 427년까지 약 400여년 동안 고구려의 수도가 자리했던 곳이다. 지린성 지안현에 있는 성터라는 설이 가장 유력하며, 광개토대왕릉비에 나오는 통구성(通溝城)이 국내성이라고 보고 있다. 지안현 서북쪽 2.5km 지점에는 국내성이 공격받을 경우 피란하던 산성자산성(위나암성)이 있다. 고구려는 3~427년 국내성을 수도로 삼았다가 427년(장수왕 15년) 평양으로 천도했으며, 국내성은 '졸본'에 이은 고구려의 두 번째 수도였다.
+
+내·외벽을 잘 다듬은 네모뿔 돌로 쌓은 석축성으로 평면은 사각형이며, 동쪽 성벽 554.7m, 남쪽 751.5m, 서쪽 715.2m, 둘레는 총 2,686m에 달한다. 성문은 여섯 곳(남북 각 1, 동서 각 2)이 있었다. 석축성 이전에는 토성이 있었음이 확인되었으며, 현재는 성벽 안쪽으로 아파트가 건설되어 흔적이 많이 훼손된 상태다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_hwando" data-expanded="0">
+      <span class="locate" onclick="focusPlace(41.149243,126.163713)">지도에서 보기</span>
+      <h4>환도산성</h4>
+      <div class="coord">41.1492, 126.1637</div>
+      <p>위나암성(尉那巖城) 또는 환도성(丸都城)은 서기 3년(유리왕 22년) 고구려가 국내성으로 천도하면서, 적의 공격에 대비해 국내성에서 가까운 산에 쌓은 산성이다. 197년 공손탁이 고구려를 침략하자 이듬해 위나암성을 전면 증축하고 환도성이라 하였으며, 산상왕 13년(209년)에는 이곳으로 도읍을 옮겼다는 기록도 있다.
+
+국내성이 평상시 거주하는 평지성이라면, 환도산성은 전시에 쓰이는 산성으로 한 조를 이루었다. 해발 676m 환도산에 위치하며 뒤로는 가파른 산 능선을, 앞으로는 퉁거우강이 흘러 국내성과 압록강을 한눈에 관찰할 수 있는 전략적 요충지였다. 현재는 성벽 대부분이 허물어지고 남측 성벽과 망대 일부만 남아 있으며, 성벽 둘레는 약 7km다. 산성 남쪽 평탄한 계곡에는 절천정총·귀갑총 등 총 1,582기의 고분이 무리를 이루고 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_sufoong" data-expanded="0">
+      <span class="locate" onclick="focusPlace(40.462182,124.9619807)">지도에서 보기</span>
+      <h4>수풍댐</h4>
+      <div class="coord">40.4622, 124.9620</div>
+      <p>압록강 상에 위치한 중력식 댐으로, 북한 평안북도 삭주군과 중국 랴오닝성 단둥시 콴뎬만족자치현 사이에 있다. 일본에 의해 1937~1943년 건설되었으며, 준공 당시 아시아 최대 규모이자 후버댐·윌슨댐에 이어 세계 3위 규모의 수력발전소였다.
+
+한국전쟁 중 1952년 6월, 9월과 1953년 2월 세 차례 공습을 받아 발전소는 파괴되었으나 댐 자체는 무너지지 않았고, 1955~1958년 사이 복구되었다. 저수용적은 117억 8600만㎥, 호수 면적은 298.16㎢에 달하는 대용량 저수지로, 발전능력은 70만kW다. 평양1·평양3 변전소와 220kV 송전선으로 연결되어 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_hagudo" data-expanded="0">
+      <span class="locate" onclick="focusPlace(40.4032559583278,124.804279133677)">지도에서 보기</span>
+      <h4>하구도</h4>
+      <div class="coord">40.4033, 124.8043</div>
+      <p>압록강 유람선 탑승장이 있는 곳으로, 모안영(毛岸英) 동상이 있다. 모안영은 모택동 주석의 장남으로, 중국인민지원군 제1호 전사로 알려져 있다. 1950년 10월 23일 이곳 하구에서 압록강을 건너 참전했고, 같은 해 11월 25일 조선에서 전사하여 평안남도 회창군의 중국인민지원군 열사 묘역에 안장되었다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+      <p style="margin-top:6px;font-size:11.5px"><a href="http://world.people.com.cn/n1/2019/1001/c1002-31382572-9.html" target="_blank" rel="noopener" style="color:var(--seal)">참고 링크 ↗ (people.com.cn)</a></p>
+    </div>
+    <div class="place-card" id="place_ilbogwa" data-expanded="0">
+      <h4>일보과 (一步跨)</h4>
+      <p>중국에서 북한과 가장 가까운 곳 중 하나로, 9걸음이면 북한에 닿을 수 있다고 해서 붙여진 이름이다.</p>
+    </div>
+    <div class="place-card" id="place_dohajang" data-expanded="0">
+      <span class="locate" onclick="focusPlace(40.157782,124.435737)">지도에서 보기</span>
+      <h4>압록강 도하지점 (부교)</h4>
+      <div class="coord">40.1578, 124.4357</div>
+      <p>한국전쟁 당시 중국인민지원군이 압록강을 건너 참전하던 도하지점이다. 인근에는 "송별친인(送別親人, 사랑하는 이들을 떠나보내며)"이라는 조각상이 있는데, 조국의 친인척이 지원군 전사를 배웅하며 전투에 임하는 역사적 장면을 재현한 것이다 (단둥시 상업은행이 2010년 6월 25일 세움).
+
+인근에는 압록강 연와 철교 유적도 남아 있다. 목구조 열주식 철교로 1951년 5월 동북군구 공병부대가 건설했으며, 직경 30~50cm 통나무로 이루어진 19개 교각으로 지탱된다. 다리 길이 500m, 폭 15m로, 항미원조 전쟁 시기 지원군이 강을 건너 전투 물자를 수송하던 중요한 통로였다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_hosan" data-expanded="0">
+      <span class="locate" onclick="focusPlace(40.227301,124.5217348)">지도에서 보기</span>
+      <h4>호산장성 (고구려 박작성 추정지)</h4>
+      <div class="coord">40.2273, 124.5217</div>
+      <p>중국 수·당의 침략에 대비해 고구려가 세운 천리장성의 일부인 박작성으로 추정되는 성곽으로, 단둥 시내에서 압록강변을 따라 북쪽으로 30km 정도에 위치한다. 1990년대에 중국이 중국식 성곽 형태로 새로 축조한 후, 만리장성의 동단이라 주장하고 있다.
+
+성곽의 축조 지형상 원래는 단둥 쪽 서쪽 방향을 방어하기 위해 호산의 서쪽 지형에 축성되었음에도, 현재 성곽 모양은 동쪽을 방어하도록 되어 있다는 점이 기록돼 있다. 다만 성안에 고구려 옛 우물 유적지가 남아 있는 것은 중국 측도 인정한다고 한다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+
+    <div class="hotel-card">
+      <b>숙소 · 丹东威尼斯建国饭店 (★★★★★)</b>
+      辽宁省丹东市振兴区月亮岛大街4号 · 0415-230 5555
+    </div>
+  </div>
+
+  <div class="day-panel" id="panel-4">
+    <p class="route-title">단동 → 대련 → 인천</p>
+    <p class="route-sub">전용차량 + 항공기 · 조식 호텔식 · 중식 김밥 · 석식 한식</p>
+    <div class="weather-box loading" id="weather-4" data-lat="38.91" data-lon="121.62" data-city="대련">날씨 불러오는 중…</div>
+    <ul class="timeline">
+      <li><span class="time">05:30–06:30</span>압록강 · 신의주 일출 관람 (자유선택)</li>
+      <li><span class="time">06:30–07:50</span>조식 <span class="meal">호텔식</span></li>
+      <li><span class="time">07:50–08:40</span>압록강단교 체험, <span class="place-link" onclick="scrollToPlace('place_uiju')">중조우의교</span> 북중 물류 현황 파악</li>
+      <li><span class="time">08:40–10:00</span>압록강 유람선 — 위화도의 변화된 모습을 단동과 비교</li>
+      <li><span class="time">10:00–15:00</span>단동 → 중조압록강대교 → 신도시 → <span class="place-link" onclick="scrollToPlace('place_hwanggeum')">황금평</span> → 동강시 이동 <span class="meal">중식·김밥</span></li>
+      <li><span class="time">15:00–16:00</span><span class="place-link" onclick="scrollToPlace('place_lushun')">뤼순감옥</span> 둘러보기 — 안중근, 신채호, 이회영이 수감된 감방 확인</li>
+      <li><span class="time">16:00–16:40</span><span class="place-link" onclick="scrollToPlace('place_guandong')">관동법원</span> 또는 뤼순감옥 구지 묘지 탐방</li>
+      <li><span class="time">16:40–17:30</span><span class="place-link" onclick="scrollToPlace('place_lushun_station')">뤼순</span> → 대련공항 이동</li>
+      <li><span class="time">17:30–18:10</span>석식 <span class="meal">한식</span></li>
+      <li><span class="time">18:20–19:10</span><span class="place-link" onclick="scrollToPlace('place_dalianairport')">대련공항</span> 도착, 출국수속 및 항공기 탑승 준비</li>
+      <li><span class="time">20:00–22:20</span>대련 → 인천 (KE876)</li>
+      <li><span class="time">22:20–23:00</span>인천 도착, 입국수속</li>
+      <li><span class="time">25:00</span>북대전IC 도착, 다음을 기약하며 인사 나누기 · 해산</li>
+    </ul>
+
+    <div class="section-h">기행지 정보</div>
+    <div class="place-card" id="place_uiju" data-expanded="0">
+      <span class="locate" onclick="focusPlace(40.1147817,124.3928692)">지도에서 보기</span>
+      <h4>중조우의교 (압록강단교)</h4>
+      <div class="coord">40.1148, 124.3929</div>
+      <p>북한 신의주시와 중국 단둥을 잇는 다리로, 한반도와 중국 동북지방을 연결하는 관문이다. 1905년 경의선 개통 이후 선박으로 남만주철도 안봉선과 연결하다가, 1911년 대형선박 통과를 위한 회전식 개폐 장치를 갖춘 단선 철교로 직접 연결되었고, 1943년 압록강 상류 쪽에 복선 철교가 추가로 가설되었다. 1932년 통계로 보행 통행자만 연간 260만 명에 달했다.
+
+하류 쪽 다리는 한국전쟁 때 파괴되어 중국 쪽 절반만 남아 "압록강단교"로 불리며, 중국이 자국에서 북한을 전망할 수 있는 관광지로 개발했다 (파괴된 부분까지만 보행 가능). 상류 쪽 다리는 1990년 북중 합의로 "중조우의교"로 개명되었으며, 철도 1개·도로 1개로 구성되어 지금도 매일 국제열차가 오간다 (코로나19 이전 기준 단둥역 출발 09:35, 신의주 출발 16:13). 신의주부터는 1번 국도가 시작되어 목포까지, 신의주역부터는 경의선이 시작되어 경부선을 통해 부산까지 이어진다. 2019년 김정은 위원장이 하노이 북미정상회담 참석을 위해 열차로 건넌 곳이기도 하다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_hwanggeum" data-expanded="0">
+      <span class="locate" onclick="focusPlace(39.9508298,124.3156557)">지도에서 보기</span>
+      <h4>황금평</h4>
+      <div class="coord">39.9508, 124.3157</div>
+      <p>황금평은 압록강 하구에 위치한 섬으로 본래 이름은 황초평이며, 면적은 11.45㎢다. 1946년 북한이 간석지를 개간해 농토로 만들었고 김일성이 "황금평"이라는 이름을 붙였다.
+
+2012년 북중은 황금평·위화도·나선지구 공동개발에 합의했으나 아직 구체적으로 실행되지 않은 상태다. 인근 위화도(11.2㎢)는 1388년 이성계가 요동정벌에 반대해 회군한 "위화도 회군"의 현장으로 알려져 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_lushun_station" data-expanded="0">
+      <span class="locate" onclick="focusPlace(38.80778,121.25237)">지도에서 보기</span>
+      <h4>뤼순역</h4>
+      <div class="coord">38.8078, 121.2524</div>
+      <p>1909년 11월 3일, 찬바람을 가르며 뤼순역에 멈춰 선 기차에서 포승줄에 묶인 안중근이 내렸다. 안중근 의사는 거사 후 7일간(1909.10.26~11.1) 하얼빈 일본총영사관(현 하얼빈화원소학교)에서 조사를 받았고, 11월 1일 안중근 등 9명의 동지들은 일본 헌병 12명과 러시아 헌병 13명에게 압송되어 하얼빈에서 기차를 타고 여순으로 출발, 11월 3일 여순감옥에 도착하였다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_lushun" data-expanded="0">
+      <span class="locate" onclick="focusPlace(38.8249184,121.2645799)">지도에서 보기</span>
+      <h4>대련 뤼순(여순)감옥</h4>
+      <div class="coord">38.8249, 121.2646</div>
+      <p>1902년 러시아가 동북 3성에 저항하는 중국인들을 제압하기 위해 건축을 시작했으나, 러일전쟁으로 일본이 뤼순을 점령한 후 1907년 현재 규모로 확장되었다. 총면적 약 26,000㎡(27,500평)에 지하감방 4개를 포함해 275개 감방이 있으며, 2천여 명을 동시 수용할 수 있었다. 내부에는 수색실(검역실), 동쪽 감방, 암방, 사형집행실, 고문실과 밭·과수원·벽돌공장 등 15개의 공장이 있었다. 수색실은 수형자가 강제노역을 위해 부속공장을 출입할 때마다 옷을 모두 벗고 몸수색을 받던 곳으로, 엄동설한에도 예외가 없었다.
+
+주로 조선인·중국인·러시아인이 수감되었고, 1906~1936년 사이 연간 약 2만여 명이 수감되었다. 1941년 태평양전쟁 발발 이후에는 조선·중국의 항일지사와 사상범을 닥치는 대로 체포해 수감하고 고문했으며, 1942~1945년 8월 사이 약 700여 명이 이곳에서 처형되었다고 한다.
+
+건물 2층에는 신채호 선생이 갇혔던 35호 감방과 이회영 선생이 옥사한 36호 감방이 나란히 있다. 안중근 의사가 갇혔던 감방과 처형장(현재는 "안중근 의사가 의로운 죽음을 한 곳"으로 재현)도 형무소 서쪽에 있다. 2010년 10월 이후 외국인도 자유롭게 방문할 수 있게 되었다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_guandong" data-expanded="0">
+      <span class="locate" onclick="focusPlace(38.8161842,121.2681499)">지도에서 보기</span>
+      <h4>관동법정 (안중근 사형 판결)</h4>
+      <div class="coord">38.8162, 121.2681</div>
+      <p>러시아와 일본에 의해 1902~1906년 사이, 일제 통치 시기 중국 지역에 개설된 전문법원이다. 현재는 9개의 전시실과 5개의 주제를 보여주는 박물관으로, 감옥의 역사연혁, 옛 모습으로 복구된 원장실·검찰관실·법정, 순국열사 자료실, 각종 형벌용기와 사법서적, 안중근 의사 공판 기록 등이 전시되어 있다.
+
+안중근은 이곳 재판정에서 1910년 2월 7일부터 14일까지 8일간 여섯 번의 공판을 받았고, 2월 14일 사형을 선고받았다 (우덕순 징역 3년, 조도순·조도선 각 징역 1년 6개월). 2월 7일 첫 공판에서 안중근은 이토 히로부미의 15대 죄악을 통박한 것으로 알려져 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+    <div class="place-card" id="place_dalianairport" data-expanded="0">
+      <span class="locate" onclick="focusPlace(38.9655556,121.5383333)">지도에서 보기</span>
+      <h4>대련 저우수이쯔 국제공항 · 대련</h4>
+      <div class="coord">38.9656, 121.5383</div>
+      <p>다롄에서 유일한 국제공항으로, 다롄 시내 동쪽 10km에 위치한다. 1927년 일본 체신성이 정기 항공 수송을 구상하며 도쿄~다롄 국제항공우편 노선을 개설했고, 당시 비행장은 길이 약 800m·폭 약 400m 규모였다. 현재는 군민공용 공항으로 인민해방군 군용기도 함께 이착륙하며, 2013년 기준 3,300m×45m 활주로 1개가 있다.
+
+다롄은 고구려 때 비사성이 있던 곳으로, 이후 청니와라는 작은 어촌이었다가 1897년 러시아가 부동항 개발을 위해 항구를 건설하며 발달했다 (러시아명 "달니이"). 1905년 러일전쟁 이후 일본 조차지가 되어 이름도 다롄으로 바뀌었고, 관동주청의 중심지이자 남만주철도 거점이 되었다. 2차대전 후 소련이 잠시 관리했고, 1950년 뤼순과 합병해 뤼다(旅大)로 불리다 1951년 중국에 반환, 1981년 다롄으로 되돌아갔다. 러시아 시기 유럽식 시가지는 지금도 관광지로 남아 있다.</p>
+      <span class="more" onclick="toggleCard(this)">더보기</span>
+    </div>
+  </div>
+
+  <div class="day-panel" id="panel-5">
+    <p class="route-title">참가자 좌석 배정 · 항공권 정보</p>
+    <p class="route-sub">이름으로 검색하면 좌석·여권 정보와 체크인 링크를 바로 확인할 수 있어요</p>
+
+    <div class="checkin-box">
+      <h5>대한항공 온라인 체크인 (국제선 출발 48시간 전 ~ 1시간 전 가능)</h5>
+      <div class="checkin-row"><span>예약번호 FMSQSG (정성일, 임재근)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
+      <div class="checkin-row"><span>예약번호 FLQLJJ (신윤실 외 7명)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
+      <div class="checkin-row"><span>예약번호 FM2ABY (장하준 외 8명)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
+    </div>
+
+    <input class="seat-search" type="text" placeholder="이름 검색 (예: 정성일)" oninput="filterSeats(this.value)">
+
+    <div class="seat-table-wrap">
+    <div class="group-header"><span>센터</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>정성일</td><td class="mono">JEONG SUNG IL</td><td class="seat">47D</td><td class="seat">36E</td><td class="mono"><span class="pnum" data-full="M130Q7255" data-dob="19860301">M1***255</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2034.02.01</td><td class="mono">FMSQSG</td></tr>
+        <tr><td>임재근</td><td class="mono">LIM JAEGEUN</td><td class="seat">48D</td><td class="seat">36D</td><td class="mono"><span class="pnum" data-full="M77833211" data-dob="19780729">M7***211</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2028.04.10</td><td class="mono">FMSQSG</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>연우네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>신윤실</td><td class="mono">SHIN YUNSHIL</td><td class="seat">47C</td><td class="seat">41A</td><td class="mono"><span class="pnum" data-full="M91880921" data-dob="19801225">M9***921</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2029.02.28</td><td class="mono">FLQLJJ</td></tr>
+        <tr><td>주연우</td><td class="mono">JOO YEONWOO</td><td class="seat">53E</td><td class="seat">40A</td><td class="mono"><span class="pnum" data-full="M711K1320" data-dob="20140428">M7***320</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2030.08.04</td><td class="mono">FLQLJJ</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>윤별네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>김윤별</td><td class="mono">KIM YOONBYUL</td><td class="seat">53D</td><td class="seat">41F</td><td class="mono"><span class="pnum" data-full="M219Y5434" data-dob="20140713">M2***434</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2031.05.07</td><td class="mono">FLQLJJ</td></tr>
+        <tr><td>황미란</td><td class="mono">HWANG MIRAN</td><td class="seat">52C</td><td class="seat">41E</td><td class="mono"><span class="pnum" data-full="M77955120" data-dob="19720902">M7***120</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2027.05.29</td><td class="mono">FLQLJJ</td></tr>
+        <tr><td>김운섭</td><td class="mono">KIM WOONSUB</td><td class="seat">51C</td><td class="seat">41D</td><td class="mono"><span class="pnum" data-full="M618C4927" data-dob="19710916">M6***927</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2032.06.09</td><td class="mono">FLQLJJ</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>민지네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>이승진</td><td class="mono">LEE SEUNGJIN</td><td class="seat">53B</td><td class="seat">42B</td><td class="mono"><span class="pnum" data-full="M333C8907" data-dob="19740714">M3***907</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2036.02.11</td><td class="mono">FLQLJJ</td></tr>
+        <tr><td>박구현</td><td class="mono">PARK GUHYUN</td><td class="seat">53C</td><td class="seat">42C</td><td class="mono"><span class="pnum" data-full="M108H2361" data-dob="19740623">M1***361</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2036.02.04</td><td class="mono">FLQLJJ</td></tr>
+        <tr><td>박민지</td><td class="mono">PARK MINJI</td><td class="seat">53A</td><td class="seat">42A</td><td class="mono"><span class="pnum" data-full="M968Y8363" data-dob="20160630">M9***363</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2031.02.04</td><td class="mono">FLQLJJ</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>하민·하준네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>장하준</td><td class="mono">JANG HAJUN</td><td class="seat">54D</td><td class="seat">40F</td><td class="mono"><span class="pnum" data-full="M792T1071" data-dob="20141024">M7***071</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2028.12.20</td><td class="mono">FM2ABY</td></tr>
+        <tr><td>박정희</td><td class="mono">PARK JEONGHEE</td><td class="seat">55D</td><td class="seat">40E</td><td class="mono"><span class="pnum" data-full="M495D4722" data-dob="19830504">M4***722</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2036.07.02</td><td class="mono">FM2ABY</td></tr>
+        <tr><td>장하민</td><td class="mono">JANG HAMIN</td><td class="seat">54E</td><td class="seat">40D</td><td class="mono"><span class="pnum" data-full="M863T2221" data-dob="20110328">M8***221</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2028.12.20</td><td class="mono">FM2ABY</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>아란네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>노아란</td><td class="mono">RHO A-RAN</td><td class="seat">53F</td><td class="seat">40B</td><td class="mono"><span class="pnum" data-full="M109V0477" data-dob="20140217">M1***477</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2030.02.20</td><td class="mono">FM2ABY</td></tr>
+        <tr><td>이지연</td><td class="mono">LEE JIYOUN</td><td class="seat">48C</td><td class="seat">41B</td><td class="mono"><span class="pnum" data-full="M028H6963" data-dob="19740218">M0***963</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2035.02.20</td><td class="mono">FM2ABY</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>서로네</span><span class="confirm-btn">확인 대기</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>정경희</td><td class="mono">JEONG KYOUNGHEE</td><td class="seat">49C</td><td class="seat">41C</td><td class="mono"><span class="pnum" data-full="M79087871" data-dob="19710725">M7***871</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2027.10.25</td><td class="mono">FM2ABY</td></tr>
+        <tr><td>박서로</td><td class="mono">PARK SEORO</td><td class="seat">54F</td><td class="seat">40C</td><td class="mono"><span class="pnum" data-full="M72374798" data-dob="20140207">M7***798</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2028.10.10</td><td class="mono">FM2ABY</td></tr>
+      </tbody>
+    </table>
+    <div class="group-header"><span>석주네</span><span class="confirm-btn done">확인완료 ✓</span></div>
+    <table class="seat-table">
+      <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
+      <tbody>
+        <tr><td>이택훈</td><td class="mono">YI TAEKHOON</td><td class="seat">55F</td><td class="seat">42E</td><td class="mono"><span class="pnum" data-full="M981S3959" data-dob="19761212">M9***959</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2036.02.23</td><td class="mono">FM2ABY</td></tr>
+        <tr><td>이석주</td><td class="mono">YI SEOKJOO</td><td class="seat">55E</td><td class="seat">42F</td><td class="mono"><span class="pnum" data-full="M712L8674" data-dob="20161104">M7***674</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2031.02.23</td><td class="mono">FM2ABY</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--ink-soft);margin:-10px 0 20px">여권번호는 기본적으로 일부만 표시됩니다. 본인 줄의 "본인 확인" 버튼을 누르고 생년월일 8자리(예: 20141028)를 입력하면 전체 번호가 보여요. (이 페이지는 정적 파일이라 완전한 보안 잠금은 아니며, 실수로 스쳐 보는 것을 막는 용도입니다.)</p>
+
+    <div class="seat-map-title">출국편 좌석 배치 (47~55열)</div>
+    <div class="scolhead">
+      <div class="sgrp"><div class="sseat">A</div><div class="sseat">B</div><div class="sseat">C</div></div>
+      <div class="saisle"></div>
+      <div class="sgrp"><div class="sseat">D</div><div class="sseat">E</div><div class="sseat">F</div></div>
+    </div>
+    <div class="seatwrap" id="dep-map"></div>
+
+    <div class="seat-map-title">입국편 좌석 배치 (36, 40~42열)</div>
+    <div class="scolhead">
+      <div class="sgrp"><div class="sseat">A</div><div class="sseat">B</div><div class="sseat">C</div></div>
+      <div class="saisle"></div>
+      <div class="sgrp"><div class="sseat">D</div><div class="sseat">E</div><div class="sseat">F</div></div>
+    </div>
+    <div class="seatwrap" id="arr-map"></div>
+  </div>
+
+  <div class="day-panel" id="panel-6">
+    <p class="route-title">짐 싸기 체크리스트</p>
+    <p class="route-sub">체크한 항목은 자동으로 저장되어, 다시 열어도 유지됩니다 (이 기기에서만).</p>
+    <div id="pack-list"></div>
+
+    <div class="section-h" style="margin-top:26px">중국 기행 필수 앱 (출발 전 미리 설치)</div>
+    <div class="app-card">
+      <h5>고덕지도 (高德地图 · Amap)</h5>
+      <p>중국 내에서는 구글맵이 제대로 작동하지 않아, 길찾기·내비게이션은 중국 표준 지도 앱인 고덕지도를 쓰는 게 훨씬 정확해요. 이 페이지의 지도도 고덕지도를 기준으로 만들었습니다.</p>
+      <div class="app-links">
+        <a href="https://apps.apple.com/app/id461703208" target="_blank" rel="noopener">iOS</a>
+        <a href="https://play.google.com/store/apps/details?id=com.autonavi.minimap" target="_blank" rel="noopener">Android</a>
+      </div>
+    </div>
+    <div class="app-card">
+      <h5>위챗 (微信 · WeChat)</h5>
+      <p>중국 내 필수 메신저이자 결제수단(위챗페이). 현지 가이드·식당·매장과의 연락 및 QR 결제에 필요해요.</p>
+      <div class="app-links">
+        <a href="https://apps.apple.com/app/id414478124" target="_blank" rel="noopener">iOS</a>
+        <a href="https://play.google.com/store/apps/details?id=com.tencent.mm" target="_blank" rel="noopener">Android</a>
+      </div>
+    </div>
+    <div class="app-card">
+      <h5>알리페이 (支付宝 · Alipay)</h5>
+      <p>위챗페이와 함께 중국 어디서든 쓰이는 QR 결제 앱. 해외 발급 카드 연동(Alipay Tour Pass 등) 방법을 출발 전 미리 확인해두면 편해요.</p>
+      <div class="app-links">
+        <a href="https://apps.apple.com/app/id333206289" target="_blank" rel="noopener">iOS</a>
+        <a href="https://play.google.com/store/apps/details?id=com.eg.android.AlipayGphone" target="_blank" rel="noopener">Android</a>
+      </div>
+    </div>
+    <div class="app-card">
+      <h5>파파고 (번역)</h5>
+      <p>현지 안내판·메뉴판 번역용. 오프라인 사용을 위해 출발 전 미리 중국어 팩을 다운로드해두는 걸 추천해요.</p>
+      <div class="app-links">
+        <a href="https://apps.apple.com/app/id1147874819" target="_blank" rel="noopener">iOS</a>
+        <a href="https://play.google.com/store/apps/details?id=com.naver.labs.translator" target="_blank" rel="noopener">Android</a>
+      </div>
+    </div>
+    <p style="font-size:11.5px;color:var(--ink-soft);margin-top:6px">참고: 중국 본토에서는 구글·카카오톡 등 일부 해외 서비스 접속이 원활하지 않을 수 있습니다. 가족·일행과의 연락은 위챗을 함께 쓰는 걸 권장해요.</p>
+  </div>
+
+  <div class="footer">
+    <div class="section-h" style="margin-top:0">안내 사항</div>
+    <div class="logi-grid">
+      <div class="logi-card"><h5>차량</h5><p>전 일정 37인승 리무진</p></div>
+      <div class="logi-card"><h5>쇼핑</h5><p>전 일정 쇼핑 일정 없음</p></div>
+      <div class="logi-card"><h5>귀국선물</h5><p>여행사에서 미리 준비한 리스트로 차량 이동 중 주문받아 귀국 전날 나눠드림</p></div>
+    </div>
+    <p class="foot-note">본 페이지는 AI로 제작되었습니다. ⓒ(사)평화통일교육문화센터</p>
+  </div>
+
+</div>
+
+<script>
+var map = L.map('map', {scrollWheelZoom:false});
+
+var gaodeLayer = L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}', {
+  subdomains: ['1','2','3','4'],
+  maxZoom: 18,
+  attribution: '&copy; AutoNavi (高德地图)'
+}).addTo(map);
+var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '&copy; OpenStreetMap contributors'
+});
+L.control.layers({'고덕지도(高德)': gaodeLayer, 'OpenStreetMap': osmLayer}, null, {position: 'topright'}).addTo(map);
+
+// WGS-84 -> GCJ-02 conversion (needed because Gaode/AutoNavi tiles use GCJ-02,
+// while our stored coordinates are true WGS-84 GPS coordinates)
+var PI = Math.PI;
+var GCJ_A = 6378245.0;
+var GCJ_EE = 0.00669342162296594323;
+function gcjTransformLat(lng, lat){
+  var ret = -100.0 + 2.0*lng + 3.0*lat + 0.2*lat*lat + 0.1*lng*lat + 0.2*Math.sqrt(Math.abs(lng));
+  ret += (20.0*Math.sin(6.0*lng*PI) + 20.0*Math.sin(2.0*lng*PI)) * 2.0/3.0;
+  ret += (20.0*Math.sin(lat*PI) + 40.0*Math.sin(lat/3.0*PI)) * 2.0/3.0;
+  ret += (160.0*Math.sin(lat/12.0*PI) + 320.0*Math.sin(lat*PI/30.0)) * 2.0/3.0;
+  return ret;
+}
+function gcjTransformLng(lng, lat){
+  var ret = 300.0 + lng + 2.0*lat + 0.1*lng*lng + 0.1*lng*lat + 0.1*Math.sqrt(Math.abs(lng));
+  ret += (20.0*Math.sin(6.0*lng*PI) + 20.0*Math.sin(2.0*lng*PI)) * 2.0/3.0;
+  ret += (20.0*Math.sin(lng*PI) + 40.0*Math.sin(lng/3.0*PI)) * 2.0/3.0;
+  ret += (150.0*Math.sin(lng/12.0*PI) + 300.0*Math.sin(lng/30.0*PI)) * 2.0/3.0;
+  return ret;
+}
+function wgs84ToGcj02(lat, lng){
+  var dlat = gcjTransformLat(lng - 105.0, lat - 35.0);
+  var dlng = gcjTransformLng(lng - 105.0, lat - 35.0);
+  var radlat = lat / 180.0 * PI;
+  var magic = Math.sin(radlat);
+  magic = 1 - GCJ_EE * magic * magic;
+  var sqrtmagic = Math.sqrt(magic);
+  dlat = (dlat * 180.0) / ((GCJ_A * (1 - GCJ_EE)) / (magic * sqrtmagic) * PI);
+  dlng = (dlng * 180.0) / (GCJ_A / sqrtmagic * Math.cos(radlat) * PI);
+  return [lat + dlat, lng + dlng];
+}
+
+var sealIcon = new L.Icon.Default();
+
+var dayData = {
+  1: {
+    center: [42.6, 129.0], zoom: 8,
+    points: [
+      [42.888008,129.446657,"연길공항"],
+      [42.707331,129.4738233,"용정 15만엔 탈취사건 유적지"],
+      [42.6726027,129.5392936,"용정 옛 명동교회"],
+      [42.672723,129.5383601,"용정 윤동주 생가"],
+      [42.6705754,129.5400993,"용정 명동학교 옛터 기념관"],
+      [42.4375081,128.1110536,"이도백하"],
+      [41.4184567,128.2049058,"장백현 (숙소)"]
+    ]
+  },
+  2: {
+    center: [41.6, 127.2], zoom: 7,
+    points: [
+      [41.4184567,128.2049058,"장백현"],
+      [41.9769915,128.0579167,"백두산 남파 (추정)"],
+      [41.14508,126.214245,"광개토대왕비"],
+      [41.1576604,126.2262664,"장수왕릉(장군총)"],
+      [41.1193627439216,126.189756430686,"집안 (숙소)"]
+    ]
+  },
+  3: {
+    center: [40.7, 125.4], zoom: 8,
+    points: [
+      [41.1197945,126.1831814,"집안 새벽장터"],
+      [41.1206205,126.1836853,"국내성 터"],
+      [41.149243,126.163713,"환도산성"],
+      [40.462182,124.9619807,"수풍댐"],
+      [40.4032559583278,124.804279133677,"하구도"],
+      [40.227301,124.5217348,"호산장성"],
+      [40.09398,124.362686,"단둥 (숙소)"]
+    ]
+  },
+  4: {
+    center: [39.9, 122.7], zoom: 7,
+    points: [
+      [40.1147817,124.3928692,"중조우의교(압록강단교)"],
+      [40.123817,124.387602,"단둥역"],
+      [39.9508298,124.3156557,"황금평"],
+      [38.8249184,121.2645799,"뤼순감옥"],
+      [38.80778,121.25237,"뤼순역"],
+      [38.8161842,121.2681499,"관동법정"],
+      [38.9655556,121.5383333,"대련공항"]
+    ]
+  }
+};
+
+var placeIdMap = {
+  "이도백하":"place_idobaekha",
+  "용정 15만엔 탈취사건 유적지":"place_15manwon",
+  "용정 윤동주 생가":"place_myeongdong",
+  "장백현 (숙소)":"place_janbaek",
+  "백두산 남파 (추정)":"place_baekdusan",
+  "광개토대왕비":"place_gwanggaeto",
+  "장수왕릉(장군총)":"place_janggun",
+  "국내성 터":"place_guknae",
+  "환도산성":"place_hwando",
+  "수풍댐":"place_sufoong",
+  "하구도":"place_hagudo",
+  "호산장성":"place_hosan",
+  "중조우의교(압록강단교)":"place_uiju",
+  "황금평":"place_hwanggeum",
+  "뤼순감옥":"place_lushun",
+  "뤼순역":"place_lushun_station",
+  "관동법정":"place_guandong",
+  "대련공항":"place_dalianairport"
+};
+
+function scrollToPlace(id){
+  var el = document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth', block:'center'});
+  el.classList.add('flash-highlight');
+  setTimeout(function(){ el.classList.remove('flash-highlight'); }, 1600);
+}
+
+var layerGroup = L.layerGroup().addTo(map);
+var polyline = null;
+
+function renderDay(day){
+  layerGroup.clearLayers();
+  var d = dayData[day];
+  var latlngs = [];
+  d.points.forEach(function(p){
+    var gcj = wgs84ToGcj02(p[0], p[1]);
+    var m = L.marker(gcj).addTo(layerGroup);
+    var linkId = placeIdMap[p[2]];
+    var html = '<b>'+p[2]+'</b>';
+    if(linkId){
+      html += '<br><a href="javascript:void(0)" onclick="scrollToPlace(\''+linkId+'\')" style="color:#A93B2C">정보 보기 ↓</a>';
+    }
+    m.bindPopup(html);
+    latlngs.push(gcj);
+  });
+  polyline = L.polyline(latlngs, {color:'#A93B2C', weight:2.5, opacity:0.7, dashArray:'1,0'}).addTo(layerGroup);
+  map.setView(wgs84ToGcj02(d.center[0], d.center[1]), d.zoom);
+}
+
+function selectDay(day){
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('.tab[data-day="'+day+'"]').classList.add('active');
+  document.querySelectorAll('.day-panel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('panel-'+day).classList.add('active');
+  var mapEl = document.getElementById('map');
+  if(day == 5 || day == 6){
+    mapEl.style.display = 'none';
+  } else {
+    mapEl.style.display = 'block';
+    renderDay(day);
+    setTimeout(function(){ map.invalidateSize(); }, 50);
+  }
+}
+
+function filterSeats(q){
+  q = q.trim();
+  document.querySelectorAll('.seat-table-wrap .seat-table').forEach(function(table){
+    var anyVisible = false;
+    table.querySelectorAll('tbody tr').forEach(function(tr){
+      var name = tr.children[0].textContent;
+      var match = !q || name.indexOf(q) !== -1;
+      tr.classList.toggle('hide', !match);
+      if(match) anyVisible = true;
+    });
+    table.style.display = anyVisible ? '' : 'none';
+    var header = table.previousElementSibling;
+    if(header && header.classList.contains('group-header')){
+      header.style.display = anyVisible ? '' : 'none';
+    }
+  });
+}
+
+function focusPlace(lat, lon){
+  map.setView(wgs84ToGcj02(lat, lon), 13);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleCard(el){
+  var card = el.parentElement;
+  var expanded = card.getAttribute('data-expanded') === '1';
+  card.setAttribute('data-expanded', expanded ? '0' : '1');
+  el.textContent = expanded ? '더보기' : '접기';
+}
+
+function verifyPassport(btn){
+  var td = btn.closest('td');
+  var span = td.querySelector('.pnum');
+  var input = prompt('본인 확인을 위해 생년월일 8자리를 입력하세요 (예: 20141028)');
+  if(input === null) return;
+  input = input.trim();
+  if(input === span.dataset.dob){
+    span.textContent = span.dataset.full;
+    btn.disabled = true;
+    btn.textContent = '확인됨';
+  } else {
+    alert('생년월일이 일치하지 않습니다.');
+  }
+}
+
+var depSeats = {
+  47:{C:'신윤실',D:'정성일'},
+  48:{C:'이지연',D:'임재근'},
+  49:{C:'정경희'},
+  51:{C:'김운섭'},
+  52:{C:'황미란'},
+  53:{A:'박민지',B:'이승진',C:'박구현',D:'김윤별',E:'주연우',F:'노아란'},
+  54:{D:'장하준',E:'장하민',F:'박서로'},
+  55:{D:'박정희',E:'이석주',F:'이택훈'}
+};
+var arrSeats = {
+  36:{D:'임재근',E:'정성일'},
+  40:{A:'주연우',B:'노아란',C:'박서로',D:'장하민',E:'박정희',F:'장하준'},
+  41:{A:'신윤실',B:'이지연',C:'정경희',D:'김운섭',E:'황미란',F:'김윤별'},
+  42:{A:'박민지',B:'이승진',C:'박구현',E:'이택훈',F:'이석주'}
+};
+
+function renderSeatMap(data, containerId){
+  var el = document.getElementById(containerId);
+  var rows = Object.keys(data).sort(function(a,b){return a-b;});
+  rows.forEach(function(r){
+    var rowDiv = document.createElement('div');
+    rowDiv.className = 'srow';
+    var num = document.createElement('div');
+    num.className = 'rownum';
+    num.textContent = r;
+    rowDiv.appendChild(num);
+    var left = document.createElement('div');
+    left.className = 'sgrp';
+    ['A','B','C'].forEach(function(c){
+      var s = document.createElement('div');
+      var name = data[r][c];
+      s.className = 'sseat ' + (name ? 'sfilled' : 'sempty');
+      s.textContent = name || c;
+      left.appendChild(s);
+    });
+    rowDiv.appendChild(left);
+    var aisle = document.createElement('div');
+    aisle.className = 'saisle';
+    rowDiv.appendChild(aisle);
+    var right = document.createElement('div');
+    right.className = 'sgrp';
+    ['D','E','F'].forEach(function(c){
+      var s = document.createElement('div');
+      var name = data[r][c];
+      s.className = 'sseat ' + (name ? 'sfilled' : 'sempty');
+      s.textContent = name || c;
+      right.appendChild(s);
+    });
+    rowDiv.appendChild(right);
+    el.appendChild(rowDiv);
+  });
+}
+// Build action row (지도에서 보기 / 구글맵 / 고덕지도) for every place-card that has coordinates
+document.querySelectorAll('.place-card').forEach(function(card){
+  var locate = card.querySelector('.locate');
+  var h4 = card.querySelector('h4');
+  if(!locate || !h4) return;
+  var m = (locate.getAttribute('onclick')||'').match(/focusPlace\(([\-\d.]+),\s*([\-\d.]+)\)/);
+  if(!m) return;
+  var lat = m[1], lon = m[2];
+  var name = h4.textContent.trim();
+  var actions = document.createElement('div');
+  actions.className = 'card-actions';
+
+  var btn = document.createElement('span');
+  btn.className = 'locate-btn';
+  btn.textContent = '지도에서 보기';
+  btn.onclick = function(){ focusPlace(parseFloat(lat), parseFloat(lon)); };
+  actions.appendChild(btn);
+
+  var gmaps = document.createElement('a');
+  gmaps.href = 'https://www.google.com/maps/search/?api=1&query=' + lat + ',' + lon;
+  gmaps.target = '_blank'; gmaps.rel = 'noopener';
+  gmaps.textContent = '구글맵 ↗';
+  actions.appendChild(gmaps);
+
+  var gaode = document.createElement('a');
+  gaode.href = 'https://uri.amap.com/marker?position=' + lon + ',' + lat + '&name=' + encodeURIComponent(name) + '&coordinate=wgs84&callnative=1';
+  gaode.target = '_blank'; gaode.rel = 'noopener';
+  gaode.textContent = '고덕지도 ↗';
+  actions.appendChild(gaode);
+
+  card.insertBefore(actions, card.firstChild);
+});
+
+renderSeatMap(depSeats, 'dep-map');
+renderSeatMap(arrSeats, 'arr-map');
+
+// D-day countdown
+(function(){
+  var target = new Date('2026-07-26T03:30:00+09:00').getTime();
+  var el = document.getElementById('ddaybar');
+  function tick(){
+    var now = Date.now();
+    var diff = target - now;
+    if(diff <= 0){
+      el.textContent = '기행이 시작되었습니다. 즐거운 여정 되세요!';
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    el.innerHTML = '북대전IC 집결까지 <span class="num">D-' + d + '</span> (' + h + '시간 ' + m + '분 전)';
+  }
+  tick();
+  setInterval(tick, 60000);
+})();
+
+// Weather (Open-Meteo, no API key needed)
+document.querySelectorAll('.weather-box').forEach(function(box){
+  var lat = box.dataset.lat, lon = box.dataset.lon, city = box.dataset.city;
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,weather_code&timezone=auto')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(!data.current){ throw new Error('no data'); }
+      var t = Math.round(data.current.temperature_2m);
+      box.classList.remove('loading');
+      box.innerHTML = '<span class="temp">' + t + '&deg;C</span><span><span class="wcity">' + city + ' 현재 기온</span><br>실시간 날씨 (Open-Meteo)</span>';
+    })
+    .catch(function(){
+      box.classList.remove('loading');
+      box.innerHTML = '<span>' + city + ' 날씨 정보를 지금은 불러올 수 없어요. 인터넷 연결을 확인하거나 나중에 다시 열어주세요.</span>';
+    });
+});
+
+// Packing checklist (persisted via localStorage on this device)
+var packGroups = {
+  '서류': ['여권 (유효기간 6개월 이상)', '여권 사본/사진 (분실 대비)'],
+  '의류·개인용품': ['상비약 (멀미약, 해열제, 지사제, 밴드 등)', '우산 또는 우비', '멀티어댑터/충전기', '보조배터리(100Wh, 약 20,000mAh 이하)', '세면도구', '선크림·모자'],
+  '현장 준비물': ['중국 위안화 현금 (위챗페이·알리페이 있으면 불필요)', '방한/방서용 겉옷 (백두산 새벽 기온 대비)', '편한 운동화 (백두산·환도산성용)'],
+};
+(function(){
+  var container = document.getElementById('pack-list');
+  var saved = {};
+  try{ saved = JSON.parse(localStorage.getItem('packChecklist') || '{}'); }catch(e){}
+  Object.keys(packGroups).forEach(function(group){
+    var h = document.createElement('div');
+    h.className = 'pack-group';
+    h.textContent = group;
+    container.appendChild(h);
+    packGroups[group].forEach(function(item){
+      var key = group + '::' + item;
+      var row = document.createElement('label');
+      row.className = 'pack-item' + (saved[key] ? ' checked' : '');
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = !!saved[key];
+      cb.onchange = function(){
+        row.classList.toggle('checked', cb.checked);
+        var s = {};
+        try{ s = JSON.parse(localStorage.getItem('packChecklist') || '{}'); }catch(e){}
+        s[key] = cb.checked;
+        localStorage.setItem('packChecklist', JSON.stringify(s));
+      };
+      var span = document.createElement('span');
+      span.textContent = item;
+      row.appendChild(cb);
+      row.appendChild(span);
+      container.appendChild(row);
+    });
+  });
+})();
+
+renderDay(1);
+</script>
+</body>
+</html>
