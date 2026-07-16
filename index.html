@@ -161,7 +161,7 @@
   <div class="day-panel active" id="panel-1">
     <p class="route-title">인천 → 연길 → 용정 → 이도백하 → 장백현</p>
     <p class="route-sub">항공기 + 전용차량 · 중식 콩국수/연변요리 · 석식 샤브샤브</p>
-    <div class="weather-box loading" id="weather-1" data-lat="42.89" data-lon="129.51" data-city="연길">날씨 불러오는 중…</div>
+    <div class="weather-box loading" id="weather-1" data-lat="42.89" data-lon="129.51" data-city="연길" data-date="2026-07-26">날씨 불러오는 중…</div>
     <ul class="timeline">
       <li><span class="time">03:30</span>북대전IC 집결 (주차 가능, 리무진 버스 이동)</li>
       <li><span class="time">06:30</span>인천공항 도착, 출국수속 및 미팅</li>
@@ -231,7 +231,7 @@
   <div class="day-panel" id="panel-2">
     <p class="route-title">장백현 → 백두산(남파) → 집안</p>
     <p class="route-sub">전용차량 · 조식 호텔식 · 중식 현지식 · 석식 불고기</p>
-    <div class="weather-box loading" id="weather-2" data-lat="41.13" data-lon="126.19" data-city="집안">날씨 불러오는 중…</div>
+    <div class="weather-box loading" id="weather-2" data-lat="41.13" data-lon="126.19" data-city="집안" data-date="2026-07-27">날씨 불러오는 중…</div>
     <ul class="timeline">
       <li><span class="time">05:30–06:30</span>장백현 탑산공원 · 영광탑 참관, 전망대에서 혜산시 조망</li>
       <li><span class="time">06:30–07:00</span>조식 <span class="meal">호텔식</span></li>
@@ -297,7 +297,7 @@
   <div class="day-panel" id="panel-3">
     <p class="route-title">집안 → 관전 → 단동</p>
     <p class="route-sub">전용차량 · 조식 호텔식 · 중식 현지식 · 석식 호텔 고급요리</p>
-    <div class="weather-box loading" id="weather-3" data-lat="40.13" data-lon="124.39" data-city="단둥">날씨 불러오는 중…</div>
+    <div class="weather-box loading" id="weather-3" data-lat="40.13" data-lon="124.39" data-city="단둥" data-date="2026-07-28">날씨 불러오는 중…</div>
     <ul class="timeline">
       <li><span class="time">05:30–06:40</span>국내성 새벽장 체험 또는 압록강변 산책 (자유선택)</li>
       <li><span class="time">06:40–07:40</span>조식 후 체크아웃 <span class="meal">호텔식</span></li>
@@ -382,7 +382,7 @@
   <div class="day-panel" id="panel-4">
     <p class="route-title">단동 → 대련 → 인천</p>
     <p class="route-sub">전용차량 + 항공기 · 조식 호텔식 · 중식 김밥 · 석식 한식</p>
-    <div class="weather-box loading" id="weather-4" data-lat="38.91" data-lon="121.62" data-city="대련">날씨 불러오는 중…</div>
+    <div class="weather-box loading" id="weather-4" data-lat="38.91" data-lon="121.62" data-city="대련" data-date="2026-07-29">날씨 불러오는 중…</div>
     <ul class="timeline">
       <li><span class="time">05:30–06:30</span>압록강 · 신의주 일출 관람 (자유선택)</li>
       <li><span class="time">06:30–07:50</span>조식 <span class="meal">호텔식</span></li>
@@ -935,15 +935,53 @@ renderSeatMap(arrSeats, 'arr-map');
 })();
 
 // Weather (Open-Meteo, no API key needed)
+var weatherCodeMap = {
+  0:['맑음','☀️'], 1:['대체로 맑음','🌤️'], 2:['구름 조금','⛅'], 3:['흐림','☁️'],
+  45:['안개','🌫️'], 48:['안개','🌫️'],
+  51:['이슬비','🌦️'], 53:['이슬비','🌦️'], 55:['이슬비','🌦️'],
+  56:['어는 이슬비','🌦️'], 57:['어는 이슬비','🌦️'],
+  61:['약한 비','🌧️'], 63:['비','🌧️'], 65:['강한 비','🌧️'],
+  66:['어는 비','🌧️'], 67:['어는 비','🌧️'],
+  71:['약한 눈','🌨️'], 73:['눈','🌨️'], 75:['강한 눈','🌨️'], 77:['눈날림','🌨️'],
+  80:['약한 소나기','🌦️'], 81:['소나기','🌧️'], 82:['강한 소나기','⛈️'],
+  85:['소나기 눈','🌨️'], 86:['강한 소나기 눈','🌨️'],
+  95:['뇌우','⛈️'], 96:['우박 동반 뇌우','⛈️'], 99:['우박 동반 강한 뇌우','⛈️']
+};
+function todayKST(){
+  var s = new Date().toLocaleString('en-US', {timeZone:'Asia/Seoul'});
+  var k = new Date(s);
+  return k.getFullYear()+'-'+String(k.getMonth()+1).padStart(2,'0')+'-'+String(k.getDate()).padStart(2,'0');
+}
 document.querySelectorAll('.weather-box').forEach(function(box){
-  var lat = box.dataset.lat, lon = box.dataset.lon, city = box.dataset.city;
-  fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,weather_code&timezone=auto')
+  var lat = box.dataset.lat, lon = box.dataset.lon, city = box.dataset.city, date = box.dataset.date;
+  var today = todayKST();
+  var daysOut = (new Date(date) - new Date(today)) / 86400000;
+
+  if(daysOut < 0){
+    // trip day already passed — nothing meaningful to show
+    box.classList.remove('loading');
+    box.innerHTML = '<span>' + city + ' · ' + date + ' (지난 일정) 예보는 더 이상 제공되지 않아요.</span>';
+    return;
+  }
+  if(daysOut > 15){
+    // beyond Open-Meteo's ~16 day forecast window
+    box.classList.remove('loading');
+    box.innerHTML = '<span>' + city + ' · ' + date + ' 예보는 아직 준비되지 않았어요. 출발일이 가까워지면(약 2주 전부터) 다시 열어보면 예보가 떠요.</span>';
+    return;
+  }
+
+  fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+        '&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&start_date=' + date + '&end_date=' + date)
     .then(function(r){ return r.json(); })
     .then(function(data){
-      if(!data.current){ throw new Error('no data'); }
-      var t = Math.round(data.current.temperature_2m);
+      if(!data.daily || !data.daily.time || data.daily.time.length === 0){ throw new Error('no data'); }
+      var max = Math.round(data.daily.temperature_2m_max[0]);
+      var min = Math.round(data.daily.temperature_2m_min[0]);
+      var code = data.daily.weathercode[0];
+      var cond = weatherCodeMap[code] || ['-',''];
       box.classList.remove('loading');
-      box.innerHTML = '<span class="temp">' + t + '&deg;C</span><span><span class="wcity">' + city + ' 현재 기온</span><br>실시간 날씨 (Open-Meteo)</span>';
+      box.innerHTML = '<span class="temp">' + cond[1] + ' ' + max + '&deg;/' + min + '&deg;C</span>' +
+        '<span><span class="wcity">' + city + ' · ' + date + ' 예보</span><br>' + cond[0] + ' (Open-Meteo)</span>';
     })
     .catch(function(){
       box.classList.remove('loading');
