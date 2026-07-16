@@ -521,7 +521,7 @@
         <tr><td>이지연</td><td class="mono">LEE JIYOUN</td><td class="seat">48C</td><td class="seat">41B</td><td class="mono"><span class="pnum" data-full="M028H6963" data-dob="19740218">M0***963</span><br><button class="verify-btn" onclick="verifyPassport(this)">본인 확인</button></td><td>2035.02.20</td><td class="mono">FM2ABY</td></tr>
       </tbody>
     </table>
-    <div class="group-header"><span>서로네</span><span class="confirm-btn">확인 대기</span></div>
+    <div class="group-header"><span>서로네</span><span class="confirm-btn done">확인완료 ✓</span></div>
     <table class="seat-table">
       <thead><tr><th>이름</th><th>영문명</th><th>출국석</th><th>입국석</th><th>여권번호</th><th>여권만료일</th><th>예약번호</th></tr></thead>
       <tbody>
@@ -989,7 +989,20 @@ var packGroups = {
   });
 })();
 
-renderDay(1);
+// Automatically show today's day tab based on the actual trip dates (KST)
+function getDefaultDay(){
+  var now = new Date();
+  var kstStr = now.toLocaleString('en-US', {timeZone: 'Asia/Seoul'});
+  var kst = new Date(kstStr);
+  var y = kst.getFullYear(), m = kst.getMonth() + 1, d = kst.getDate();
+  var dateNum = y * 10000 + m * 100 + d;
+  if(dateNum <= 20260726) return 1;
+  if(dateNum === 20260727) return 2;
+  if(dateNum === 20260728) return 3;
+  if(dateNum >= 20260729) return 4;
+  return 1;
+}
+selectDay(getDefaultDay());
 </script>
 </body>
 </html>
