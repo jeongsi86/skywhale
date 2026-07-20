@@ -77,9 +77,10 @@
 
   .checkin-box{background:var(--paper-dim);border-radius:10px;padding:13px 15px;margin-bottom:16px;}
   .checkin-box h5{margin:0 0 8px;font-size:13px;color:var(--seal);}
-  .checkin-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(36,51,73,0.1);font-size:12.5px;}
-  .checkin-row:last-child{border-bottom:none;}
-  .checkin-btn{background:var(--ink);color:#fff;font-size:11.5px;padding:5px 12px;border-radius:999px;text-decoration:none;white-space:nowrap;}
+  .entry-table{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;border-radius:8px;overflow:hidden;}
+  .entry-table td{padding:6px 10px;border-bottom:1px solid rgba(36,51,73,0.08);}
+  .entry-table td:first-child{color:var(--ink-soft);width:38%;font-size:11.5px;}
+  .entry-table tr:last-child td{border-bottom:none;}
 
   .pack-item{display:flex;align-items:center;gap:9px;padding:9px 4px;border-bottom:1px solid rgba(36,51,73,0.1);font-size:14px;}
   .pack-item input{width:18px;height:18px;flex-shrink:0;}
@@ -164,7 +165,7 @@
     <ul class="timeline">
       <li><span class="time">03:30</span>북대전IC 집결 (주차 가능, 리무진 버스 이동)</li>
       <li><span class="time">06:30</span>인천공항 도착, 출국수속 및 미팅</li>
-      <li><span class="time">09:25–10:50</span>인천 → 연길 (KE117)</li>
+      <li><span class="time">09:25–10:50</span>인천 → 연길 (KE115)</li>
       <li><span class="time">10:50–11:50</span>입국수속 후 가이드와 만나기</li>
       <li><span class="time">11:50–12:20</span>연길 → 용정 이동</li>
       <li><span class="time">12:20–13:00</span>중식 <span class="meal">콩국수·연변요리</span></li>
@@ -472,13 +473,32 @@
 
   <div class="day-panel" id="panel-5">
     <p class="route-title">참가자 좌석 배정 · 항공권 정보</p>
-    <p class="route-sub">이름으로 검색하면 좌석·여권 정보와 체크인 링크를 바로 확인할 수 있어요</p>
+    <p class="route-sub">이름으로 검색하면 좌석·이티켓을 바로 확인할 수 있어요. 중국 입국신고서 공통 입력값도 아래에서 확인하세요.</p>
 
     <div class="checkin-box">
-      <h5>대한항공 온라인 체크인 (국제선 출발 48시간 전 ~ 1시간 전 가능)</h5>
-      <div class="checkin-row"><span>예약번호 FMSQSG (정성일, 임재근)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
-      <div class="checkin-row"><span>예약번호 FLQLJJ (신윤실 외 7명)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
-      <div class="checkin-row"><span>예약번호 FM2ABY (장하준 외 8명)</span><a class="checkin-btn" href="https://www.koreanair.com/kr/ko/airport/check-in/pre-check-in/online-check-in" target="_blank" rel="noopener">체크인 →</a></div>
+      <h5>중국 입국신고서 (电子入境卡) 공통 입력값</h5>
+      <p style="font-size:12px;color:var(--ink-soft);margin:0 0 10px">개인마다 다른 항목(이름·여권번호·생년월일·연락처)은 각자 입력하고, 아래 값은 모두 동일하게 넣으면 돼요. 국가이민관리국 공식 사이트: <a href="https://s.nia.gov.cn/ArrivalCardFillingPC/entry-registation-home" target="_blank" rel="noopener" style="color:var(--seal)">s.nia.gov.cn ↗</a></p>
+      <table class="entry-table">
+        <tr><td>입국 항공편</td><td>KE115</td></tr>
+        <tr><td>입국 도시</td><td>Jilin &gt; Korean Autonomous Prefecture of Yanbian</td></tr>
+        <tr><td>입국 통상구</td><td>Yanji</td></tr>
+        <tr><td>출생국/지역</td><td>Republic of Korea (KOR) / Daejeon</td></tr>
+        <tr><td>유효한 비자</td><td>아니오</td></tr>
+        <tr><td>입국 정책 선택</td><td>무비자 입국</td></tr>
+        <tr><td>입국사유</td><td>관광/휴양</td></tr>
+        <tr><td>입국일자</td><td>20260726</td></tr>
+        <tr><td>체류 목적지 도시</td><td>Jilin &gt; Tonghua</td></tr>
+        <tr><td>경유 도시</td><td>Liaoning &gt; Dandong</td></tr>
+        <tr><td>중국 내 주소</td><td>长白志诚园酒店 (长白县白山大街2号)</td></tr>
+        <tr><td>초청여부</td><td>중국측 초청회사</td></tr>
+        <tr><td>회사 명칭</td><td>DANDONG NS TRAVEL CO.,LTD.</td></tr>
+        <tr><td>회사 연락처</td><td>13904257373</td></tr>
+        <tr><td>출국일자</td><td>20260729</td></tr>
+        <tr><td>출국 항공편</td><td>KE876</td></tr>
+        <tr><td>출국도시</td><td>Liaoning &gt; Dalian</td></tr>
+        <tr><td>출국 통상구</td><td>Zhoushuizi</td></tr>
+      </table>
+      <p style="font-size:11.5px;color:var(--ink-soft);margin:10px 0 0">※ 항공권 체크인은 인솔자가 일괄로 진행합니다. 개별 체크인은 하지 않아도 돼요.</p>
     </div>
 
     <input class="seat-search" type="text" placeholder="이름 검색 (예: 정성일)" oninput="filterSeats(this.value)">
