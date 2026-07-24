@@ -163,7 +163,7 @@
     <p class="route-sub">항공기 + 전용차량 · 중식 콩국수/연변요리 · 석식 샤브샤브</p>
     <div class="weather-box loading" id="weather-1" data-lat="42.89" data-lon="129.51" data-city="연길" data-date="2026-07-26">날씨 불러오는 중…</div>
     <ul class="timeline">
-      <li><span class="time">03:30</span>북대전IC 집결 (주차 가능, 리무진 버스 이동)</li>
+      <li><span class="time">03:30</span>북대전IC 만남의광장 집결 (주차 가능, 리무진 버스 이동)</li>
       <li><span class="time">06:30</span>인천공항 도착, 출국수속 및 미팅</li>
       <li><span class="time">09:25–10:50</span>인천 → 연길 (KE115)</li>
       <li><span class="time">10:50–11:50</span>입국수속 후 가이드와 만나기</li>
@@ -176,6 +176,12 @@
       <li><span class="time">18:00–21:00</span><span class="place-link" onclick="scrollToPlace('place_idobaekha')">이도백하</span> → <span class="place-link" onclick="scrollToPlace('place_janbaek')">장백현</span> 이동</li>
       <li><span class="time">21:00–22:00</span>호텔 체크인 후 휴식</li>
     </ul>
+
+    <div class="hotel-card" style="margin-top:0">
+      <b>대전 → 인천 버스 (북대전IC 만남의 광장 출발)</b>
+      대전한밭관광 · 드림관광 7945호 · 기사 최명철 · 010-4120-7494<br>
+      07/26(일) 대전 03:30 출발 → 인천
+    </div>
 
     <div class="section-h">기행지 정보</div>
     <div class="place-card" id="place_313" data-expanded="0">
@@ -953,7 +959,7 @@ renderSeatMap(arrSeats, 'arr-map');
     var d = Math.floor(diff / 86400000);
     var h = Math.floor((diff % 86400000) / 3600000);
     var m = Math.floor((diff % 3600000) / 60000);
-    el.innerHTML = '북대전IC 집결까지 <span class="num">D-' + d + '</span> (' + h + '시간 ' + m + '분 전)';
+    el.innerHTML = '북대전IC 만남의광장 집결까지 <span class="num">D-' + d + '</span> (' + h + '시간 ' + m + '분 전)';
   }
   tick();
   setInterval(tick, 60000);
