@@ -242,6 +242,8 @@
   <div class="day-panel" id="panel-2">
     <p class="route-title">장백현 → 백두산(남파) → 집안</p>
     <p class="route-sub">전용차량 · 조식 호텔식 · 중식 현지식 · 석식 불고기</p>
+    <div class="weather-box loading" id="weather-baekdu-live" data-mode="live" data-lat="41.977" data-lon="128.058" data-city="백두산 남파(해발 약 2,000m)">실시간 날씨 불러오는 중…</div>
+    <div class="weather-box loading" id="weather-baekdu" data-lat="41.977" data-lon="128.058" data-city="백두산 남파(해발 약 2,000m)" data-date="2026-07-27">날씨 불러오는 중…</div>
     <div class="weather-box loading" id="weather-2" data-lat="41.13" data-lon="126.19" data-city="집안" data-date="2026-07-27">날씨 불러오는 중…</div>
     <ul class="timeline">
       <li><span class="time">05:30–06:30</span>장백현 탑산공원 · 영광탑 참관, 전망대에서 혜산시 조망 (자유선택)</li>
@@ -985,6 +987,28 @@ function todayKST(){
 }
 document.querySelectorAll('.weather-box').forEach(function(box){
   var lat = box.dataset.lat, lon = box.dataset.lon, city = box.dataset.city, date = box.dataset.date;
+
+  if(box.dataset.mode === 'live'){
+    fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon +
+          '&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto')
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+        if(!data.current){ throw new Error('no data'); }
+        var t = Math.round(data.current.temperature_2m);
+        var w = Math.round(data.current.wind_speed_10m);
+        var code = data.current.weather_code;
+        var cond = weatherCodeMap[code] || ['-',''];
+        box.classList.remove('loading');
+        box.innerHTML = '<span class="temp">' + cond[1] + ' ' + t + '&deg;C</span>' +
+          '<span><span class="wcity">' + city + ' · 실시간</span><br>' + cond[0] + ' · 바람 ' + w + 'km/h (Open-Meteo)</span>';
+      })
+      .catch(function(){
+        box.classList.remove('loading');
+        box.innerHTML = '<span>' + city + ' 실시간 날씨를 지금은 불러올 수 없어요. 인터넷 연결을 확인하거나 나중에 다시 열어주세요.</span>';
+      });
+    return;
+  }
+
   var today = todayKST();
   var daysOut = (new Date(date) - new Date(today)) / 86400000;
 
